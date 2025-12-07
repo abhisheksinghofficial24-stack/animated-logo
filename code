@@ -1,0 +1,228 @@
+import { useState } from 'react';
+import { motion } from 'framer-motion';
+
+export default function App() {
+  const [selectedLogo, setSelectedLogo] = useState(0);
+
+  const logos = [
+    {
+      name: "Monogram",
+      component: <MonogramLogo />
+    },
+    {
+      name: "Wordmark",
+      component: <WordmarkLogo />
+    },
+    {
+      name: "Badge",
+      component: <BadgeLogo />
+    }
+  ];
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex flex-col items-center justify-center p-8">
+      <div className="mb-12">
+        {logos[selectedLogo].component}
+      </div>
+
+      <div className="flex gap-4">
+        {logos.map((logo, index) => (
+          <button
+            key={index}
+            onClick={() => setSelectedLogo(index)}
+            className={`px-6 py-3 rounded-lg transition-all ${
+              selectedLogo === index
+                ? 'bg-white text-slate-900'
+                : 'bg-white/10 text-white hover:bg-white/20'
+            }`}
+          >
+            {logo.name}
+          </button>
+        ))}
+      </div>
+
+      <p className="mt-8 text-white/60">Click the buttons to view different logo variations</p>
+    </div>
+  );
+}
+
+function MonogramLogo() {
+  return (
+    <div className="relative">
+      <motion.svg 
+        width="200" 
+        height="200" 
+        viewBox="0 0 200 200" 
+        fill="none" 
+        xmlns="http://www.w3.org/2000/svg"
+        initial={{ scale: 0, rotate: -180 }}
+        animate={{ scale: 1, rotate: 0 }}
+        transition={{ duration: 0.8, ease: "easeOut" }}
+      >
+        <defs>
+          <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style={{ stopColor: '#8b5cf6', stopOpacity: 1 }} />
+            <stop offset="100%" style={{ stopColor: '#3b82f6', stopOpacity: 1 }} />
+          </linearGradient>
+        </defs>
+        
+        {/* Hexagon background */}
+        <motion.path 
+          d="M100 10 L170 50 L170 130 L100 170 L30 130 L30 50 Z" 
+          fill="url(#grad1)" 
+          stroke="white" 
+          strokeWidth="3"
+          initial={{ pathLength: 0 }}
+          animate={{ pathLength: 1 }}
+          transition={{ duration: 1.5, ease: "easeInOut" }}
+        />
+        
+        {/* Letter A */}
+        <motion.path 
+          d="M 100 60 L 130 130 L 115 130 L 110 115 L 90 115 L 85 130 L 70 130 L 100 60 Z M 95 105 L 105 105 L 100 85 Z" 
+          fill="white"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.5 }}
+        />
+      </motion.svg>
+    </div>
+  );
+}
+
+function WordmarkLogo() {
+  const letters = "ABHISHEK".split("");
+  
+  return (
+    <div className="text-center">
+      <svg width="400" height="120" viewBox="0 0 400 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="grad2" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" style={{ stopColor: '#8b5cf6', stopOpacity: 1 }} />
+            <stop offset="100%" style={{ stopColor: '#3b82f6', stopOpacity: 1 }} />
+          </linearGradient>
+        </defs>
+        
+        {letters.map((letter, index) => (
+          <motion.text
+            key={index}
+            x={50 + index * 38}
+            y="75"
+            fontSize="56"
+            fontFamily="system-ui, -apple-system, sans-serif"
+            fontWeight="700"
+            fill="url(#grad2)"
+            letterSpacing="-2"
+            initial={{ opacity: 0, y: -50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ 
+              duration: 0.5, 
+              delay: index * 0.1,
+              ease: "easeOut"
+            }}
+          >
+            {letter}
+          </motion.text>
+        ))}
+        
+        {/* Underline accent */}
+        <motion.rect 
+          x="50" 
+          y="90" 
+          width="300" 
+          height="4" 
+          fill="url(#grad2)" 
+          rx="2"
+          initial={{ scaleX: 0 }}
+          animate={{ scaleX: 1 }}
+          transition={{ duration: 0.8, delay: 0.8, ease: "easeOut" }}
+          style={{ transformOrigin: "left center" }}
+        />
+      </svg>
+    </div>
+  );
+}
+
+function BadgeLogo() {
+  return (
+    <div className="relative">
+      <motion.svg 
+        width="240" 
+        height="240" 
+        viewBox="0 0 240 240" 
+        fill="none" 
+        xmlns="http://www.w3.org/2000/svg"
+        initial={{ rotate: 0 }}
+        animate={{ rotate: 360 }}
+        transition={{ duration: 2, ease: "easeInOut" }}
+      >
+        <defs>
+          <linearGradient id="grad3" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style={{ stopColor: '#8b5cf6', stopOpacity: 1 }} />
+            <stop offset="50%" style={{ stopColor: '#6366f1', stopOpacity: 1 }} />
+            <stop offset="100%" style={{ stopColor: '#3b82f6', stopOpacity: 1 }} />
+          </linearGradient>
+        </defs>
+        
+        {/* Outer circle */}
+        <motion.circle 
+          cx="120" 
+          cy="120" 
+          r="110" 
+          fill="url(#grad3)" 
+          stroke="white" 
+          strokeWidth="4"
+          initial={{ scale: 0 }}
+          animate={{ scale: 1 }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+        />
+        
+        {/* Inner circle */}
+        <motion.circle 
+          cx="120" 
+          cy="120" 
+          r="90" 
+          fill="none" 
+          stroke="white" 
+          strokeWidth="2" 
+          opacity="0.3"
+          initial={{ scale: 0 }}
+          animate={{ scale: 1 }}
+          transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
+        />
+        
+        {/* Letter A in center */}
+        <motion.text 
+          x="120" 
+          y="145" 
+          fontSize="80" 
+          fontFamily="system-ui, -apple-system, sans-serif" 
+          fontWeight="700" 
+          fill="white" 
+          textAnchor="middle"
+          initial={{ opacity: 0, scale: 0 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.5, delay: 0.4, ease: "backOut" }}
+        >
+          A
+        </motion.text>
+        
+        {/* Top arc text - ABHISHEK */}
+        <path id="topArc" d="M 40 120 A 80 80 0 0 1 200 120" fill="none"/>
+        <motion.text 
+          fontSize="18" 
+          fontFamily="system-ui, -apple-system, sans-serif" 
+          fontWeight="600" 
+          fill="white"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5, delay: 0.8 }}
+        >
+          <textPath href="#topArc" startOffset="50%" textAnchor="middle" letterSpacing="2">
+            ABHISHEK
+          </textPath>
+        </motion.text>
+      </motion.svg>
+    </div>
+  );
+}
